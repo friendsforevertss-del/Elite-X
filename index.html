@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fake News Identify - Detect Misinformation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Running Header -->
+    <header class="running-header">
+        <div class="running-text">
+            🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨
+        </div>
+    </header>
+
+    <!-- Fake News Ticker -->
+    <div class="news-ticker">
+        <div class="ticker-content">
+            <span>📰 BREAKING: "Celebrity endorses miracle cure" - FALSE</span>
+            <span>⚠️ ALERT: "Government announces free money giveaway" - MISLEADING</span>
+            <span>🔍 FACT CHECK: "Virus causes zombie apocalypse" - HOAX</span>
+            <span>📊 STUDY: "Chocolate makes you lose weight" - UNVERIFIED</span>
+            <span>🚫 DEBUNKED: "Politician caught in scandal" - MANIPULATED</span>
+            <span>⚡ TRENDING: "New law bans internet" - SATIRE</span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Left Content Area -->
+        <div class="left-content">
+            <div class="seal-container">
+                <div class="seal-item fake-seal">
+                    <img src="https://picsum.photos/seed/fakenews123/300/200.jpg" alt="Fake News Example">
+                    <div class="seal-label red-seal">FAKE</div>
+                </div>
+                <div class="seal-item real-seal">
+                    <img src="https://picsum.photos/seed/realnews456/300/200.jpg" alt="Real News Example">
+                    <div class="seal-label green-seal">REAL</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Auth Section -->
+        <div class="right-content">
+            <!-- Login Section -->
+            <section class="auth-section active" id="loginSection">
+                <div class="auth-card">
+                    <h2>Sign In</h2>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="username">Username</label>
+                            <input type="text" id="username" name="username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" required>
+                        </div>
+                        <div class="privacy-checkbox">
+                            <input type="checkbox" id="loginPrivacyPolicy" name="loginPrivacyPolicy" required>
+                            <label for="loginPrivacyPolicy">I accept all <a href="#" onclick="showPrivacyPolicy()">privacy policies</a> and terms of service</label>
+                        </div>
+                        <button type="submit" class="btn-primary">Sign In</button>
+                    </form>
+                    <p class="auth-switch">
+                        Don't have an account? <a href="#" onclick="switchToSignup()">Create Account</a>
+                    </p>
+                </div>
+            </section>
+
+            <!-- Signup Section -->
+            <section class="auth-section" id="signupSection">
+                <div class="auth-card">
+                    <h2>Create Account</h2>
+                    <form id="signupForm">
+                        <div class="form-group">
+                            <label for="newUsername">Username</label>
+                            <input type="text" id="newUsername" name="newUsername" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="newPassword">Password</label>
+                            <input type="password" id="newPassword" name="newPassword" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" name="confirmPassword" required>
+                        </div>
+                        <div class="privacy-checkbox">
+                            <input type="checkbox" id="privacyPolicy" name="privacyPolicy" required>
+                            <label for="privacyPolicy">I accept all <a href="#" onclick="showPrivacyPolicy()">privacy policies</a> and terms of service</label>
+                        </div>
+                        <button type="submit" class="btn-primary">Create Account</button>
+                    </form>
+                    <p class="auth-switch">
+                        Already have an account? <a href="#" onclick="switchToLogin()">Sign In</a>
+                    </p>
+                </div>
+            </section>
+        </div>
+
+        <!-- Privacy Policy Modal -->
+        <div class="modal" id="privacyModal">
+            <div class="modal-content">
+                <span class="close" onclick="closePrivacyModal()">&times;</span>
+                <h2>Privacy Policy</h2>
+                <div class="policy-content">
+                    <h3>Data Collection</h3>
+                    <p>We collect information you provide directly to us, such as when you create an account, use our services, or contact us for support.</p>
+                    
+                    <h3>How We Use Your Information</h3>
+                    <p>We use the information we collect to provide, maintain, and improve our services, process transactions, and communicate with you.</p>
+                    
+                    <h3>Information Sharing</h3>
+                    <p>We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this policy.</p>
+                    
+                    <h3>Data Security</h3>
+                    <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
+                    
+                    <h3>Your Rights</h3>
+                    <p>You have the right to access, update, or delete your personal information at any time.</p>
+                    
+                    <h3>Changes to This Policy</h3>
+                    <p>We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page.</p>
+                </div>
+                <button class="btn-primary" onclick="acceptPrivacyPolicy()">Accept Policy</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
