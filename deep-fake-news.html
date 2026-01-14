@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deep Fake News - Detection Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Running Header -->
+    <header class="running-header">
+        <div class="running-text">
+            🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨
+        </div>
+    </header>
+
+    <!-- Fake News Ticker -->
+    <div class="news-ticker">
+        <div class="ticker-content">
+            <span>📰 BREAKING: "Celebrity endorses miracle cure" - FALSE</span>
+            <span>⚠️ ALERT: "Government announces free money giveaway" - MISLEADING</span>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <div class="deep-fake-container">
+            <div class="deep-fake-header">
+                <h1>🔍 Deep Fake News Detection</h1>
+                <p>Upload content to analyze for authenticity and detect potential misinformation</p>
+            </div>
+
+            <div class="upload-section">
+                <div class="upload-options">
+                    <div class="upload-card" onclick="showVideoUpload()">
+                        <div class="upload-icon">🎥</div>
+                        <h3>Upload Video</h3>
+                        <p>Upload video files to analyze for deep fake content</p>
+                        <div class="supported-formats">
+                            <strong>Supported Formats:</strong> MP4, AVI, MOV, MKV, WebM
+                        </div>
+                    </div>
+
+                    <div class="upload-card" onclick="showPhotoUpload()">
+                        <div class="upload-icon">📸</div>
+                        <h3>Upload Photo</h3>
+                        <p>Upload images to detect manipulated or AI-generated content</p>
+                        <div class="supported-formats">
+                            <strong>Supported Formats:</strong> JPG, PNG, GIF, BMP, WebP
+                        </div>
+                    </div>
+
+                    <div class="upload-card" onclick="showTextUpload()">
+                        <div class="upload-icon">📝</div>
+                        <h3>Upload Text</h3>
+                        <p>Analyze text content for fake news and misinformation</p>
+                        <div class="supported-formats">
+                            <strong>Supported Formats:</strong> TXT, PDF, DOC, DOCX
+                        </div>
+                    </div>
+
+                    <div class="upload-card" onclick="showAudioUpload()">
+                        <div class="upload-icon">🎵</div>
+                        <h3>Upload Audio</h3>
+                        <p>Detect voice cloning and audio manipulation</p>
+                        <div class="supported-formats">
+                            <strong>Supported Formats:</strong> MP3, WAV, AAC, OGG, M4A
+                        </div>
+                    </div>
+
+                    <div class="upload-card" onclick="showDocumentUpload()">
+                        <div class="upload-icon">📄</div>
+                        <h3>Upload Document</h3>
+                        <p>Analyze documents for false information and propaganda</p>
+                        <div class="supported-formats">
+                            <strong>Supported Formats:</strong> PDF, DOC, DOCX, PPT, PPTX
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Results -->
+                <div class="analysis-section" id="analysisSection" style="display: none;">
+                    <h2>🔬 Analysis Results</h2>
+                    <div class="result-card">
+                        <div class="result-header">
+                            <h3>Content Authenticity Score</h3>
+                            <div class="authenticity-score">
+                                <div class="score-circle">
+                                    <span id="scoreValue">85%</span>
+                                </div>
+                                <span class="score-label">Likely Authentic</span>
+                            </div>
+                        </div>
+                        <div class="result-details">
+                            <div class="detail-item">
+                                <span class="detail-label">AI Generated:</span>
+                                <span class="detail-value">15%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Manipulated:</span>
+                                <span class="detail-value">5%</span>
+                            </div>
+                            <div class="detail-item">
+                                <span class="detail-label">Original:</span>
+                                <span class="detail-value">80%</span>
+                            </div>
+                        </div>
+                        <div class="recommendation">
+                            <h4>🛡️ Recommendation</h4>
+                            <p>This content appears to be authentic with minimal manipulation detected. However, always verify information from multiple reliable sources.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <button class="btn-secondary" onclick="goBack()">← Back to Login</button>
+                <button class="btn-primary" onclick="analyzeContent()">🔍 Analyze Content</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Create hidden file input
+        const fileInput = document.createElement('input');
+        fileInput.type = 'file';
+        fileInput.multiple = true;
+        fileInput.style.display = 'none';
+        document.body.appendChild(fileInput);
+
+        function showVideoUpload() {
+            fileInput.accept = 'video/*';
+            fileInput.click();
+        }
+
+        function showPhotoUpload() {
+            fileInput.accept = 'image/*';
+            fileInput.click();
+        }
+
+        function showTextUpload() {
+            fileInput.accept = '.txt,.pdf,.doc,.docx';
+            fileInput.click();
+        }
+
+        function showAudioUpload() {
+            fileInput.accept = 'audio/*';
+            fileInput.click();
+        }
+
+        function showDocumentUpload() {
+            fileInput.accept = '.pdf,.doc,.docx,.ppt,.pptx';
+            fileInput.click();
+        }
+
+        async function analyzeContent() {
+            // Show loading state with backend verification
+            const analysisSection = document.getElementById('analysisSection');
+            analysisSection.style.display = 'block';
+            analysisSection.innerHTML = `
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <h3>Connecting to backend...</h3>
+                    <div class="verification-steps">
+                        <div class="step" id="step-backend">
+                            <span class="step-icon">🔗</span>
+                            <span class="step-text">Establishing secure connection...</span>
+                        </div>
+                        <div class="step" id="step-google">
+                            <span class="step-icon">🔍</span>
+                            <span class="step-text">Querying Google database...</span>
+                        </div>
+                        <div class="step" id="step-chatgpt">
+                            <span class="step-icon">🤖</span>
+                            <span class="step-text">Analyzing with AI models...</span>
+                        </div>
+                        <div class="step" id="step-kaggle">
+                            <span class="step-icon">📊</span>
+                            <span class="step-text">Cross-referencing datasets...</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            try {
+                // Get selected file
+                if (fileInput.files.length === 0) {
+                    showMessage('Please select a file to analyze', 'error');
+                    return;
+                }
+                
+                const file = fileInput.files[0];
+                const formData = new FormData();
+                formData.append('file', file);
+                
+                // Update connection status
+                setTimeout(() => {
+                    document.getElementById('step-backend').classList.add('completed');
+                    document.querySelector('#step-backend .step-text').textContent = 'Backend connection established';
+                }, 500);
+                
+                // Send to real backend
+                const response = await fetch('http://localhost:3000/api/analyze', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                if (!response.ok) {
+                    throw new Error('Backend analysis failed');
+                }
+                
+                const result = await response.json();
+                
+                // Update verification steps
+                setTimeout(() => {
+                    document.getElementById('step-google').classList.add('completed');
+                    document.querySelector('#step-google .step-text').textContent = result.analysis.google.status === 'verified' ? 
+                        '✓ Google verification completed' : '⚠ Google verification completed';
+                }, 1000);
+                
+                setTimeout(() => {
+                    document.getElementById('step-chatgpt').classList.add('completed');
+                    document.querySelector('#step-chatgpt .step-text').textContent = result.analysis.chatgpt.status === 'verified' ? 
+                        '✓ AI analysis completed' : '⚠ AI analysis completed';
+                }, 1500);
+                
+                setTimeout(() => {
+                    document.getElementById('step-kaggle').classList.add('completed');
+                    document.querySelector('#step-kaggle .step-text').textContent = result.analysis.kaggle.status === 'verified' ? 
+                        '✓ Dataset verification completed' : '⚠ Dataset verification completed';
+                }, 2000);
+                
+                // Display final results
+                setTimeout(() => {
+                    displayRealResults(result.analysis);
+                }, 2500);
+                
+            } catch (error) {
+                console.error('Analysis error:', error);
+                analysisSection.innerHTML = `
+                    <div class="error-message">
+                        <h3>❌ Analysis Failed</h3>
+                        <p>Unable to connect to backend server. Please ensure the backend is running on localhost:3000</p>
+                        <button class="btn-primary" onclick="analyzeContent()">Retry Analysis</button>
+                    </div>
+                `;
+            }
+        }
+
+        function displayRealResults(analysis) {
+            const analysisSection = document.getElementById('analysisSection');
+            const score = analysis.overallScore;
+            
+            analysisSection.innerHTML = `
+                <h2>🔬 Real Backend Analysis Results</h2>
+                <div class="result-card">
+                    <div class="result-header">
+                        <h3>Content Authenticity Score</h3>
+                        <div class="authenticity-score">
+                            <div class="score-circle" style="background: linear-gradient(135deg, ${score.color} 0%, ${score.color}dd 100%);">
+                                <span id="scoreValue">${score.score}%</span>
+                            </div>
+                            <span class="score-label" style="color: ${score.color};">${score.label}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="verification-sources">
+                        <h4>🌐 Live Verification Results</h4>
+                        <div class="source-results">
+                            <div class="source-item">
+                                <div class="source-icon">🔍</div>
+                                <div class="source-info">
+                                    <strong>Google Search Database:</strong>
+                                    <span class="source-status ${analysis.google.status === 'verified' ? 'verified' : 'warning'}">
+                                        ${analysis.google.message}
+                                    </span>
+                                    <div class="confidence-score">Confidence: ${analysis.google.confidence}%</div>
+                                </div>
+                            </div>
+                            <div class="source-item">
+                                <div class="source-icon">🤖</div>
+                                <div class="source-info">
+                                    <strong>AI Model Analysis:</strong>
+                                    <span class="source-status ${analysis.chatgpt.status === 'verified' ? 'verified' : 'warning'}">
+                                        ${analysis.chatgpt.message}
+                                    </span>
+                                    <div class="confidence-score">Confidence: ${analysis.chatgpt.confidence}%</div>
+                                    ${analysis.chatgpt.aiGeneratedProbability ? 
+                                        `<div class="ai-score">AI Probability: ${analysis.chatgpt.aiGeneratedProbability}%</div>` : ''}
+                                </div>
+                            </div>
+                            <div class="source-item">
+                                <div class="source-icon">📊</div>
+                                <div class="source-info">
+                                    <strong>Dataset Comparison:</strong>
+                                    <span class="source-status ${analysis.kaggle.status === 'verified' ? 'verified' : 'warning'}">
+                                        ${analysis.kaggle.message}
+                                    </span>
+                                    <div class="confidence-score">Confidence: ${analysis.kaggle.confidence}%</div>
+                                    ${analysis.kaggle.manipulationScore ? 
+                                        `<div class="manipulation-score">Manipulation Score: ${analysis.kaggle.manipulationScore}%</div>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="result-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Overall Score:</span>
+                            <span class="detail-value">${score.score}%</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Status:</span>
+                            <span class="detail-value" style="color: ${score.color};">${score.label}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">Analysis Time:</span>
+                            <span class="detail-value">${new Date(analysis.timestamp).toLocaleTimeString()}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="recommendation">
+                        <h4>🛡️ Backend Recommendation</h4>
+                        <p>${analysis.recommendation}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function goBack() {
+            window.location.href = 'index.html';
+        }
+
+        // Handle file selection
+        fileInput.addEventListener('change', () => {
+            if (fileInput.files.length > 0) {
+                console.log('Files selected:', fileInput.files);
+                analyzeContent();
+            }
+        });
+    </script>
+
+    <style>
+        .deep-fake-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .deep-fake-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .deep-fake-header h1 {
+            color: #dc2626;
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .deep-fake-header p {
+            color: #6b7280;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .upload-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .upload-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border-color: #dc2626;
+        }
+
+        .upload-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+        }
+
+        .upload-card h3 {
+            color: #1f2937;
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .upload-card p {
+            color: #6b7280;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .supported-formats {
+            background: rgba(0, 0, 0, 0.05);
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+            color: #4b5563;
+        }
+
+        .upload-area {
+            margin-bottom: 40px;
+        }
+
+        .upload-zone {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 2px dashed rgba(220, 38, 38, 0.3);
+            border-radius: 20px;
+            padding: 60px 40px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .upload-zone.drag-over {
+            border-color: #dc2626;
+            background: rgba(220, 38, 38, 0.05);
+        }
+
+        .upload-large-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+
+        .upload-zone h3 {
+            color: #1f2937;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .upload-zone p {
+            color: #6b7280;
+            margin-bottom: 20px;
+        }
+
+        .analysis-section {
+            margin-bottom: 40px;
+        }
+
+        .analysis-section h2 {
+            color: #1f2937;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .result-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .result-header h3 {
+            color: #1f2937;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .authenticity-score {
+            text-align: center;
+        }
+
+        .score-circle {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 0 auto 10px;
+        }
+
+        .score-label {
+            color: #10b981;
+            font-weight: 600;
+        }
+
+        .result-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+        }
+
+        .detail-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .recommendation {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 4px solid #10b981;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .recommendation h4 {
+            color: #10b981;
+            margin-bottom: 10px;
+        }
+
+        .recommendation p {
+            color: #4b5563;
+            line-height: 1.6;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #6b7280 0%, #4b5563 100%);
+            color: white;
+            border: none;
+            padding: 14px 24px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary:hover {
+            background: linear-gradient(135deg, #4b5563 0%, #374151 100%);
+            transform: translateY(-2px);
+        }
+
+        .loading {
+            text-align: center;
+            padding: 60px;
+        }
+
+        .verification-steps {
+            margin-top: 30px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 10px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .step.completed {
+            background: rgba(16, 185, 129, 0.1);
+            border-left: 3px solid #10b981;
+        }
+
+        .step-icon {
+            font-size: 20px;
+            margin-right: 12px;
+        }
+
+        .step-text {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .step.completed .step-text {
+            color: #10b981;
+        }
+
+        .verification-sources {
+            margin-bottom: 30px;
+        }
+
+        .verification-sources h4 {
+            color: #1f2937;
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .source-results {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .source-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            border-left: 3px solid #e5e7eb;
+        }
+
+        .source-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            margin-top: 2px;
+        }
+
+        .source-info {
+            flex: 1;
+        }
+
+        .source-info strong {
+            display: block;
+            color: #1f2937;
+            margin-bottom: 5px;
+        }
+
+        .source-status {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .source-status.verified {
+            color: #10b981;
+        }
+
+        .source-status.warning {
+            color: #f59e0b;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid rgba(220, 38, 38, 0.2);
+            border-top: 4px solid #dc2626;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .upload-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-header {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</body>
+</html>
