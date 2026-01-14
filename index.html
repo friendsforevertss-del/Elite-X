@@ -3,131 +3,384 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fake News Identify - Detect Misinformation</title>
-    <link rel="stylesheet" href="styles.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Fake News Identify</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .upload-area {
+            border: 2px dashed #cbd5e0;
+            transition: all 0.3s ease;
+        }
+        .upload-area:hover {
+            border-color: #667eea;
+            background-color: #f7fafc;
+        }
+        .upload-area.dragover {
+            border-color: #667eea;
+            background-color: #edf2f7;
+        }
+    </style>
 </head>
-<body>
-    <!-- Running Header -->
-    <header class="running-header">
-        <div class="running-text">
-            🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨 !!FAKE NEWS IDENTIFY!! 🚨
-        </div>
-    </header>
-
-    <!-- Fake News Ticker -->
-    <div class="news-ticker">
-        <div class="ticker-content">
-            <span>📰 BREAKING: "Celebrity endorses miracle cure" - FALSE</span>
-            <span>⚠️ ALERT: "Government announces free money giveaway" - MISLEADING</span>
+<body class="gradient-bg min-h-screen">
+    <!-- Login Section -->
+    <div id="loginSection" class="min-h-screen flex items-center justify-center p-4">
+        <div class="glass-effect rounded-2xl shadow-2xl p-8 w-full max-w-md">
+            <div class="text-center mb-8">
+                <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full mb-4">
+                    <i class="fas fa-shield-alt text-white text-3xl"></i>
+                </div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2">Fake News Identify</h1>
+                <p class="text-gray-600">Detect fake news, videos, and images</p>
+            </div>
+            
+            <form id="loginForm" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-user mr-2"></i>Username
+                    </label>
+                    <input type="text" id="username" name="username" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
+                           placeholder="Enter your username">
+                </div>
+                
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-700 mb-2">
+                        <i class="fas fa-lock mr-2"></i>Password
+                    </label>
+                    <input type="password" id="password" name="password" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent transition duration-200"
+                           placeholder="Enter your password">
+                </div>
+                
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center">
+                        <input type="checkbox" class="w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                        <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    </label>
+                    <a href="#" class="text-sm text-purple-600 hover:text-purple-800 transition duration-200">Forgot password?</a>
+                </div>
+                
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-3 px-4 rounded-lg hover:from-purple-600 hover:to-indigo-700 transform hover:scale-105 transition duration-200 shadow-lg">
+                    <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+                </button>
+            </form>
+            
+            <div class="mt-6 text-center">
+                <p class="text-sm text-gray-600">
+                    Don't have an account? 
+                    <a href="#" class="text-purple-600 hover:text-purple-800 font-semibold transition duration-200">Sign up</a>
+                </p>
+            </div>
         </div>
     </div>
 
-    <!-- Main Container -->
-    <main class="main-container">
-        <!-- Left Content Area -->
-        <div class="left-content">
-            <div class="seal-container">
-                <div class="seal-item fake-seal">
-                    <img src="https://picsum.photos/seed/ai-generated-disaster-fake/300/200.jpg" alt="AI Generated Disaster">
-                    <div class="seal-label red-seal">FAKE/AI</div>
-                </div>
-                <div class="seal-item real-seal">
-                    <img src="https://picsum.photos/seed/real-disaster-emergency/300/200.jpg" alt="Real Disaster">
-                    <div class="seal-label green-seal">REAL</div>
+    <!-- Main Application Section -->
+    <div id="mainSection" class="hidden min-h-screen">
+        <!-- Navigation -->
+        <nav class="glass-effect shadow-lg sticky top-0 z-50">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 flex items-center">
+                            <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-indigo-600 rounded-full flex items-center justify-center">
+                                <i class="fas fa-shield-alt text-white"></i>
+                            </div>
+                            <span class="ml-3 text-xl font-bold text-gray-800">Fake News Identify</span>
+                        </div>
+                        <!-- Navigation Menu -->
+                        <div class="hidden md:block ml-10">
+                            <div class="flex items-baseline space-x-4">
+                                <a href="#" onclick="showSection('home')" class="nav-link text-gray-700 hover:bg-purple-50 hover:text-purple-700 px-3 py-2 rounded-md text-sm font-medium transition duration-200">Home</a>
+                                <a href="#" onclick="showSection('faq')" class="nav-link text-gray-700 hover:bg-purple-50 hover:text-purple-700 px-3 py-2 rounded-md text-sm font-medium transition duration-200">FAQ</a>
+                                <a href="#" onclick="showSection('blog')" class="nav-link text-gray-700 hover:bg-purple-50 hover:text-purple-700 px-3 py-2 rounded-md text-sm font-medium transition duration-200">Blog</a>
+                                <a href="#" onclick="showSection('detector')" class="nav-link text-gray-700 hover:bg-purple-50 hover:text-purple-700 px-3 py-2 rounded-md text-sm font-medium transition duration-200">Detector</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-700">Welcome, <span id="userDisplay" class="font-semibold"></span></span>
+                        <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition duration-200">
+                            <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                        </button>
+                        <!-- Mobile menu button -->
+                        <div class="md:hidden">
+                            <button onclick="toggleMobileMenu()" class="text-gray-700 hover:bg-purple-50 hover:text-purple-700 p-2 rounded-md">
+                                <i class="fas fa-bars text-xl"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-
-        <!-- Right Auth Section -->
-        <div class="right-content">
-            <!-- Login Section -->
-            <section class="auth-section active" id="loginSection">
-                <div class="auth-card">
-                    <h2>Sign In</h2>
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="username">Username</label>
-                            <input type="text" id="username" name="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <input type="password" id="password" name="password" required>
-                        </div>
-                        <div class="privacy-checkbox">
-                            <input type="checkbox" id="loginPrivacyPolicy" name="loginPrivacyPolicy" required>
-                            <label for="loginPrivacyPolicy">I accept all <a href="#" onclick="showPrivacyPolicy()">privacy policies</a> and terms of service</label>
-                        </div>
-                        <button type="submit" class="btn-primary">Sign In</button>
-                    </form>
-                    <p class="auth-switch">
-                        Don't have an account? <a href="#" onclick="switchToSignup()">Create Account</a>
-                    </p>
+            <!-- Mobile menu -->
+            <div id="mobileMenu" class="hidden md:hidden">
+                <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <a href="#" onclick="showSection('home'); toggleMobileMenu()" class="mobile-nav-link text-gray-700 hover:bg-purple-50 hover:text-purple-700 block px-3 py-2 rounded-md text-base font-medium">Home</a>
+                    <a href="#" onclick="showSection('faq'); toggleMobileMenu()" class="mobile-nav-link text-gray-700 hover:bg-purple-50 hover:text-purple-700 block px-3 py-2 rounded-md text-base font-medium">FAQ</a>
+                    <a href="#" onclick="showSection('blog'); toggleMobileMenu()" class="mobile-nav-link text-gray-700 hover:bg-purple-50 hover:text-purple-700 block px-3 py-2 rounded-md text-base font-medium">Blog</a>
+                    <a href="#" onclick="showSection('detector'); toggleMobileMenu()" class="mobile-nav-link text-gray-700 hover:bg-purple-50 hover:text-purple-700 block px-3 py-2 rounded-md text-base font-medium">Detector</a>
                 </div>
-            </section>
+            </div>
+        </nav>
 
-            <!-- Signup Section -->
-            <section class="auth-section" id="signupSection">
-                <div class="auth-card">
-                    <h2>Create Account</h2>
-                    <form id="signupForm">
-                        <div class="form-group">
-                            <label for="newUsername">Username</label>
-                            <input type="text" id="newUsername" name="newUsername" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="newPassword">Password</label>
-                            <input type="password" id="newPassword" name="newPassword" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="confirmPassword">Confirm Password</label>
-                            <input type="password" id="confirmPassword" name="confirmPassword" required>
-                        </div>
-                        <div class="privacy-checkbox">
-                            <input type="checkbox" id="privacyPolicy" name="privacyPolicy" required>
-                            <label for="privacyPolicy">I accept all <a href="#" onclick="showPrivacyPolicy()">privacy policies</a> and terms of service</label>
-                        </div>
-                        <button type="submit" class="btn-primary">Create Account</button>
-                    </form>
-                    <p class="auth-switch">
-                        Already have an account? <a href="#" onclick="switchToLogin()">Sign In</a>
-                    </p>
+        <!-- Main Content -->
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Home Section -->
+            <div id="homeSection" class="content-section">
+                <div class="text-center mb-10">
+                    <h2 class="text-4xl font-bold text-white mb-4">Welcome to Fake News Identify</h2>
+                    <p class="text-xl text-gray-200 mb-8">Your trusted companion in the fight against misinformation</p>
                 </div>
-            </section>
-        </div>
 
-        <!-- Privacy Policy Modal -->
-        <div class="modal" id="privacyModal">
-            <div class="modal-content">
-                <span class="close" onclick="closePrivacyModal()">&times;</span>
-                <h2>Privacy Policy</h2>
-                <div class="policy-content">
-                    <h3>Data Collection</h3>
-                    <p>We collect information you provide directly to us, such as when you create an account, use our services, or contact us for support.</p>
-                    
-                    <h3>How We Use Your Information</h3>
-                    <p>We use the information we collect to provide, maintain, and improve our services, process transactions, and communicate with you.</p>
-                    
-                    <h3>Information Sharing</h3>
-                    <p>We do not sell, trade, or otherwise transfer your personal information to third parties without your consent, except as described in this policy.</p>
-                    
-                    <h3>Data Security</h3>
-                    <p>We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction.</p>
-                    
-                    <h3>Your Rights</h3>
-                    <p>You have the right to access, update, or delete your personal information at any time.</p>
-                    
-                    <h3>Changes to This Policy</h3>
-                    <p>We may update this privacy policy from time to time. We will notify you of any changes by posting the new policy on this page.</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                    <div class="glass-effect rounded-xl p-8">
+                        <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-shield-alt text-purple-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Our Mission</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            We are dedicated to combating the spread of fake news and misinformation by providing powerful, 
+                            easy-to-use tools that help you verify the authenticity of content across multiple formats.
+                        </p>
+                    </div>
+
+                    <div class="glass-effect rounded-xl p-8">
+                        <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6">
+                            <i class="fas fa-chart-line text-blue-600 text-2xl"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-gray-800 mb-4">Why It Matters</h3>
+                        <p class="text-gray-600 leading-relaxed">
+                            In today's digital age, misinformation spreads faster than ever. Our tools help you make 
+                            informed decisions by identifying potentially false or manipulated content before it causes harm.
+                        </p>
+                    </div>
                 </div>
-                <button class="btn-primary" onclick="acceptPrivacyPolicy()">Accept Policy</button>
+
+                <div class="glass-effect rounded-xl p-8 text-center">
+                    <h3 class="text-2xl font-bold text-gray-800 mb-6">Ready to get started?</h3>
+                    <p class="text-gray-600 mb-8">Use our advanced detector to analyze any content for authenticity</p>
+                    <button onclick="showSection('detector')" class="bg-gradient-to-r from-purple-500 to-indigo-600 text-white font-semibold py-3 px-8 rounded-lg hover:from-purple-600 hover:to-indigo-700 transform hover:scale-105 transition duration-200 shadow-lg">
+                        <i class="fas fa-search mr-2"></i>Start Detection
+                    </button>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div id="faqSection" class="content-section hidden">
+                <div class="text-center mb-10">
+                    <h2 class="text-4xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+                    <p class="text-xl text-gray-200">Find answers to common questions about our service</p>
+                </div>
+
+                <div class="space-y-6">
+                    <div class="glass-effect rounded-xl p-6">
+                        <button onclick="toggleFAQ(this)" class="w-full text-left flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-800">How accurate is the fake news detection?</h3>
+                            <i class="fas fa-chevron-down text-gray-600 transition-transform duration-200"></i>
+                        </button>
+                        <div class="faq-content hidden mt-4 text-gray-600">
+                            <p>Our detection system uses advanced machine learning algorithms trained on millions of verified and fake content samples. While no system is 100% perfect, our accuracy rate is typically between 85-95% depending on the type of content and quality of the input.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect rounded-xl p-6">
+                        <button onclick="toggleFAQ(this)" class="w-full text-left flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-800">What types of content can I analyze?</h3>
+                            <i class="fas fa-chevron-down text-gray-600 transition-transform duration-200"></i>
+                        </button>
+                        <div class="faq-content hidden mt-4 text-gray-600">
+                            <p>You can analyze text articles, images, and videos. Our system supports various file formats including TXT, PDF, DOC, DOCX for text, JPG, PNG, GIF for images, and MP4, AVI, MOV for videos.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect rounded-xl p-6">
+                        <button onclick="toggleFAQ(this)" class="w-full text-left flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-800">Is my data secure and private?</h3>
+                            <i class="fas fa-chevron-down text-gray-600 transition-transform duration-200"></i>
+                        </button>
+                        <div class="faq-content hidden mt-4 text-gray-600">
+                            <p>Absolutely. We take privacy very seriously. All uploaded content is processed securely and is not stored permanently on our servers. Your analysis results are only visible to you and are not shared with third parties.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect rounded-xl p-6">
+                        <button onclick="toggleFAQ(this)" class="w-full text-left flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-800">How long does analysis take?</h3>
+                            <i class="fas fa-chevron-down text-gray-600 transition-transform duration-200"></i>
+                        </button>
+                        <div class="faq-content hidden mt-4 text-gray-600">
+                            <p>Analysis time varies depending on the content type and size. Text analysis typically takes 2-5 seconds, image analysis takes 5-15 seconds, and video analysis can take 30 seconds to several minutes depending on the video length and resolution.</p>
+                        </div>
+                    </div>
+
+                    <div class="glass-effect rounded-xl p-6">
+                        <button onclick="toggleFAQ(this)" class="w-full text-left flex items-center justify-between">
+                            <h3 class="text-lg font-semibold text-gray-800">Can I use this service for commercial purposes?</h3>
+                            <i class="fas fa-chevron-down text-gray-600 transition-transform duration-200"></i>
+                        </button>
+                        <div class="faq-content hidden mt-4 text-gray-600">
+                            <p>Yes, our service is available for both personal and commercial use. We offer different pricing tiers for individuals, businesses, and enterprises. Contact our sales team for more information about commercial licensing.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Blog Section -->
+            <div id="blogSection" class="content-section hidden">
+                <div class="text-center mb-10">
+                    <h2 class="text-4xl font-bold text-white mb-4">Latest Blog Posts</h2>
+                    <p class="text-xl text-gray-200">Stay informed about fake news and digital literacy</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <article class="glass-effect rounded-xl overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-r from-purple-400 to-indigo-500 flex items-center justify-center">
+                            <i class="fas fa-newspaper text-white text-4xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-purple-600 font-semibold mb-2">December 15, 2023</div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Understanding Deepfake Technology</h3>
+                            <p class="text-gray-600 mb-4">Learn how deepfake technology works and the latest methods to detect manipulated videos and images.</p>
+                            <a href="#" class="text-purple-600 hover:text-purple-800 font-semibold transition duration-200">Read More →</a>
+                        </div>
+                    </article>
+
+                    <article class="glass-effect rounded-xl overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-r from-blue-400 to-cyan-500 flex items-center justify-center">
+                            <i class="fas fa-shield-alt text-white text-4xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-blue-600 font-semibold mb-2">December 10, 2023</div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">5 Tips to Spot Fake News</h3>
+                            <p class="text-gray-600 mb-4">Essential skills everyone needs to identify misinformation and verify sources before sharing.</p>
+                            <a href="#" class="text-blue-600 hover:text-blue-800 font-semibold transition duration-200">Read More →</a>
+                        </div>
+                    </article>
+
+                    <article class="glass-effect rounded-xl overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-r from-green-400 to-teal-500 flex items-center justify-center">
+                            <i class="fas fa-brain text-white text-4xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-green-600 font-semibold mb-2">December 5, 2023</div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">AI in Fact-Checking</h3>
+                            <p class="text-gray-600 mb-4">How artificial intelligence is revolutionizing the way we verify information and combat misinformation.</p>
+                            <a href="#" class="text-green-600 hover:text-green-800 font-semibold transition duration-200">Read More →</a>
+                        </div>
+                    </article>
+
+                    <article class="glass-effect rounded-xl overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-r from-red-400 to-pink-500 flex items-center justify-center">
+                            <i class="fas fa-users text-white text-4xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-red-600 font-semibold mb-2">November 28, 2023</div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Digital Literacy in Education</h3>
+                            <p class="text-gray-600 mb-4">Why teaching digital literacy and critical thinking skills is crucial in today's information landscape.</p>
+                            <a href="#" class="text-red-600 hover:text-red-800 font-semibold transition duration-200">Read More →</a>
+                        </div>
+                    </article>
+
+                    <article class="glass-effect rounded-xl overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-r from-yellow-400 to-orange-500 flex items-center justify-center">
+                            <i class="fas fa-globe text-white text-4xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-yellow-600 font-semibold mb-2">November 20, 2023</div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Global Misinformation Trends</h3>
+                            <p class="text-gray-600 mb-4">An analysis of how misinformation spreads across different platforms and regions worldwide.</p>
+                            <a href="#" class="text-yellow-600 hover:text-yellow-800 font-semibold transition duration-200">Read More →</a>
+                        </div>
+                    </article>
+
+                    <article class="glass-effect rounded-xl overflow-hidden hover:shadow-xl transition duration-300">
+                        <div class="h-48 bg-gradient-to-r from-indigo-400 to-purple-500 flex items-center justify-center">
+                            <i class="fas fa-lock text-white text-4xl"></i>
+                        </div>
+                        <div class="p-6">
+                            <div class="text-sm text-indigo-600 font-semibold mb-2">November 15, 2023</div>
+                            <h3 class="text-xl font-bold text-gray-800 mb-3">Privacy in the Digital Age</h3>
+                            <p class="text-gray-600 mb-4">Protecting your personal information while staying informed and verifying online content.</p>
+                            <a href="#" class="text-indigo-600 hover:text-indigo-800 font-semibold transition duration-200">Read More →</a>
+                        </div>
+                    </article>
+                </div>
+            </div>
+
+            <!-- Detector Section -->
+            <div id="detectorSection" class="content-section hidden">
+                <div class="text-center mb-10">
+                    <h2 class="text-4xl font-bold text-white mb-4">Detect Fake Content</h2>
+                    <p class="text-xl text-gray-200">Upload or paste content to verify its authenticity</p>
+                </div>
+
+            <!-- Detection Options -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+                <div class="glass-effect rounded-xl p-6 text-center hover:shadow-xl transition duration-300 cursor-pointer" onclick="selectDetectionType('text')">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-newspaper text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Text Analysis</h3>
+                    <p class="text-gray-600">Analyze news articles and text content</p>
+                </div>
+                
+                <div class="glass-effect rounded-xl p-6 text-center hover:shadow-xl transition duration-300 cursor-pointer" onclick="selectDetectionType('image')">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-image text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Image Verification</h3>
+                    <p class="text-gray-600">Check if images are authentic or manipulated</p>
+                </div>
+                
+                <div class="glass-effect rounded-xl p-6 text-center hover:shadow-xl transition duration-300 cursor-pointer" onclick="selectDetectionType('video')">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-video text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">Video Analysis</h3>
+                    <p class="text-gray-600">Detect deepfakes and manipulated videos</p>
+                </div>
+            </div>
+
+            <!-- Upload Area -->
+            <div id="uploadArea" class="glass-effect rounded-xl p-8 mb-8">
+                <div id="textUpload" class="upload-area rounded-lg p-8 text-center">
+                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-700 mb-2">Upload Content for Analysis</h3>
+                    <p class="text-gray-600 mb-4">Drag and drop files here or click to browse</p>
+                    <input type="file" id="fileInput" class="hidden" accept="image/*,video/*,.txt,.pdf,.doc,.docx">
+                    <button onclick="document.getElementById('fileInput').click()" 
+                            class="bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg transition duration-200">
+                        <i class="fas fa-upload mr-2"></i>Choose File
+                    </button>
+                </div>
+
+                <div id="textInput" class="hidden">
+                    <h3 class="text-xl font-semibold text-gray-700 mb-4">Paste Text Content</h3>
+                    <textarea id="textArea" rows="8" 
+                              class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+                              placeholder="Paste the news article or text content you want to analyze..."></textarea>
+                    <button onclick="analyzeText()" 
+                            class="mt-4 bg-purple-500 hover:bg-purple-600 text-white px-6 py-3 rounded-lg transition duration-200">
+                        <i class="fas fa-search mr-2"></i>Analyze Text
+                    </button>
+                </div>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="hidden glass-effect rounded-xl p-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Analysis Results</h3>
+                <div id="resultsContent"></div>
             </div>
         </div>
-    </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
